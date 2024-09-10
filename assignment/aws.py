@@ -41,7 +41,7 @@ def start_watching(directory, bucket_name):
 
     observer.join()
 
-directory_to_watch = '/Users/helen/Desktop/2024-mini/json_file/'  
-bucket_name = 'ec463game'  
+directory_to_watch = '/Users/helen/Desktop/2024-mini/json_file/'  #change it to your own path
+bucket_name = 'ec463game'  #It connect to my AWS account
 
 start_watching(directory_to_watch, bucket_name)
