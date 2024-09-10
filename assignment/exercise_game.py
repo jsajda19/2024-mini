@@ -2,10 +2,32 @@
 Response time - single-threaded
 """
 
-from machine import Pin
+#from machine import Pin
 import time
 import random
 import json
+import os
+
+class Pin:
+    OUT = 0
+    IN = 1
+    PULL_UP = 2
+
+    def __init__(self, pin_number, mode, pull=None):
+        self.pin_number = pin_number
+        self.mode = mode
+        self.state = 0
+
+    def high(self):
+        self.state = 1
+        print(f"Pin {self.pin_number} set HIGH")
+
+    def low(self):
+        self.state = 0
+        print(f"Pin {self.pin_number} set LOW")
+
+    def value(self):
+        return random.choice([0, 1])
 
 
 N: int = 3
@@ -51,21 +73,41 @@ def scorer(t: list[int | None]) -> None:
     print(f"You missed the light {misses} / {len(t)} times")
 
     t_good = [x for x in t if x is not None]
+    
+    if t_good:
+        min_time = min(t_good)
+        max_time = max(t_good)
+        avg_time = sum(t_good) / len(t_good)
+    else:
+        min_time = max_time = avg_time = None
+
+    score = (len(t) - misses) / len(t)
 
     print(t_good)
 
     # add key, value to this dict to store the minimum, maximum, average response time
     # and score (non-misses / total flashes) i.e. the score a floating point number
     # is in range [0..1]
-    data = {}
+    data = {
+        "min_time": min_time,
+        "max_time": max_time,
+        "average_time": avg_time,
+        "score": score,
+        "misses": misses
+    }
 
     # %% make dynamic filename and write JSON
 
     now: tuple[int] = time.localtime()
 
     now_str = "-".join(map(str, now[:3])) + "T" + "_".join(map(str, now[3:6]))
-    filename = f"score-{now_str}.json"
+    directory = '/Users/helen/Desktop/2024-mini/json_file/' 
 
+    filename = os.path.join(directory, f"score-{now_str}.json")
+
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
     print("write", filename)
 
     write_json(filename, data)
@@ -74,8 +116,8 @@ def scorer(t: list[int | None]) -> None:
 if __name__ == "__main__":
     # using "if __name__" allows us to reuse functions in other script files
 
-    led = Pin("LED", Pin.OUT)
-    button = Pin(16, Pin.IN, Pin.PULL_UP)
+    led = Pin(15, Pin.OUT)
+    button = Pin(15, Pin.IN, Pin.PULL_UP)
 
     t: list[int | None] = []
 
@@ -86,11 +128,11 @@ if __name__ == "__main__":
 
         led.high()
 
-        tic = time.ticks_ms()
+        tic = time.time() * 1000 
         t0 = None
-        while time.ticks_diff(time.ticks_ms(), tic) < on_ms:
+        while (time.time() * 1000 - tic) < on_ms:
             if button.value() == 0:
-                t0 = time.ticks_diff(time.ticks_ms(), tic)
+                t0 = time.time() * 1000 - tic
                 led.low()
                 break
         t.append(t0)
