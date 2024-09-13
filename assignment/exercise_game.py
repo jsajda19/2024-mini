@@ -2,7 +2,7 @@
 Response time - single-threaded
 """
 
-#from machine import Pin
+from machine import Pin
 import time
 import random
 import json
@@ -116,7 +116,7 @@ def scorer(t: list[int | None]) -> None:
 if __name__ == "__main__":
     # using "if __name__" allows us to reuse functions in other script files
 
-    led = Pin(15, Pin.OUT)
+    led = Pin("LED", Pin.OUT)
     button = Pin(15, Pin.IN, Pin.PULL_UP)
 
     t: list[int | None] = []
