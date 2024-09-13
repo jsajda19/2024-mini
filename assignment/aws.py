@@ -44,4 +44,7 @@ def start_watching(directory, bucket_name):
 directory_to_watch = '/Users/helen/Desktop/2024-mini/json_file/'  #change it to your own path
 bucket_name = 'ec463game'  #It connect to my AWS account
 
+#Access key: AKIAYQYUA224WKVO4QQC
+#Secret access key: cql/eDN2fa18028eOYAIGHIh2k9AqzPeS2Pi/8JG
+
 start_watching(directory_to_watch, bucket_name)
