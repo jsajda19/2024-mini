@@ -1,3 +1,9 @@
+#On your Commond: aws configure
+#Enter the Access key: AKIAYQYUA224WKVO4QQC
+#Enter the Secret access key: cql/eDN2fa18028eOYAIGHIh2k9AqzPeS2Pi/8JG
+#Back to Commond, tupe python c:\JSON\aws.py (the path of your aws.py file)
+#It will start monitor, then when you run your exercise_game.py. The JSON file will be auto upload to AWS
+
 import os
 import time
 import boto3
@@ -44,7 +50,6 @@ def start_watching(directory, bucket_name):
 directory_to_watch = '/Users/helen/Desktop/2024-mini/json_file/'  #change it to your own path
 bucket_name = 'ec463game'  #It connect to my AWS account
 
-#Access key: AKIAYQYUA224WKVO4QQC
-#Secret access key: cql/eDN2fa18028eOYAIGHIh2k9AqzPeS2Pi/8JG
+
 
 start_watching(directory_to_watch, bucket_name)
